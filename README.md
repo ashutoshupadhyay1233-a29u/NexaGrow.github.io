@@ -352,21 +352,21 @@
         <div class="contact-detail"><div class="contact-detail-icon">🕐</div><div><div class="contact-detail-label">Response Time</div><div class="contact-detail-text">Within 24 hours</div></div></div>
       </div>
       <div class="reveal reveal-delay-2">
-        <form class="contact-form" id="contactForm" onsubmit="handleSubmit(event)">
+        <form class="contact-form" id="contactForm" action="https://formspree.io/f/xeevwnrz" method="POST" onsubmit="handleSubmit(event)">
           <div class="form-row">
-            <div class="form-group"><label>Your Name</label><input type="text" placeholder="e.g. Rahul Gupta" required /></div>
-            <div class="form-group"><label>Email Address</label><input type="email" placeholder="you@example.com" required /></div>
+            <div class="form-group"><label>Your Name</label><input type="text" name="name" placeholder="e.g. Rahul Gupta" required /></div>
+            <div class="form-group"><label>Email Address</label><input type="email" name="email" placeholder="you@example.com" required /></div>
           </div>
           <div class="form-row">
-            <div class="form-group"><label>WhatsApp Number</label><input type="tel" placeholder="+91 XXXXX XXXXX" /></div>
+            <div class="form-group"><label>WhatsApp Number</label><input type="tel" name="whatsapp" placeholder="+91 XXXXX XXXXX" /></div>
             <div class="form-group"><label>Type of Business</label>
-              <select><option value="">Select category...</option><option>E-commerce / Online Shop</option><option>Food &amp; Restaurant</option><option>Fashion &amp; Lifestyle</option><option>Health &amp; Wellness</option><option>Education / Coaching</option><option>Content Creator / Influencer</option><option>Local Service Business</option><option>Other</option></select>
+              <select name="business_type"><option value="">Select category...</option><option>E-commerce / Online Shop</option><option>Food &amp; Restaurant</option><option>Fashion &amp; Lifestyle</option><option>Health &amp; Wellness</option><option>Education / Coaching</option><option>Content Creator / Influencer</option><option>Local Service Business</option><option>Other</option></select>
             </div>
           </div>
           <div class="form-group"><label>What Are You Looking For?</label>
-            <select><option value="">Select a service...</option><option>Free Digital Audit (No cost)</option><option>Social Media Marketing</option><option>SEO &amp; Content</option><option>Paid Advertising</option><option>Reels &amp; Short-Form Video</option><option>Brand Identity</option><option>Full Digital Package</option><option>Not Sure — Need Guidance</option></select>
+            <select name="service"><option value="">Select a service...</option><option>Free Digital Audit (No cost)</option><option>Social Media Marketing</option><option>SEO &amp; Content</option><option>Paid Advertising</option><option>Reels &amp; Short-Form Video</option><option>Brand Identity</option><option>Full Digital Package</option><option>Not Sure — Need Guidance</option></select>
           </div>
-          <div class="form-group"><label>Tell Us About Your Business &amp; Goals</label><textarea placeholder="What does your business do? What are you hoping to achieve digitally? Any budget in mind? The more detail, the better we can help."></textarea></div>
+          <div class="form-group"><label>Tell Us About Your Business &amp; Goals</label><textarea name="message" placeholder="What does your business do? What are you hoping to achieve digitally? Any budget in mind? The more detail, the better we can help."></textarea></div>
           <button type="submit" class="form-submit"><span>Send Message →</span></button>
           <div class="success-msg" id="successMsg">✦ Message received! We'll be in touch within 24 hours.</div>
         </form>
@@ -379,9 +379,7 @@
     <div class="footer-logo">Nexa<span>Grow</span> Digital</div>
     <div class="footer-copy">© 2025 NexaGrow Digital · Lucknow, India</div>
     <div class="footer-socials">
-      <a href="#" class="social-link" title="LinkedIn">in</a>
       <a href="https://www.instagram.com/dw_ashu.toast?igsh=MTZvNGh1c2lnMDh2" class="social-link" title="Instagram">ig</a>
-      <a href="https://whatsapp.com/dl/" class="social-link" title="WhatsApp">wa</a>
     </div>
   </footer>
 
@@ -398,11 +396,28 @@
     const reveals=document.querySelectorAll('.reveal');
     const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:0.1});
     reveals.forEach(el=>obs.observe(el));
-    function handleSubmit(e){
+    async function handleSubmit(e) {
       e.preventDefault();
-      const btn=e.target.querySelector('.form-submit');
-      btn.innerHTML='<span>Sending…</span>';btn.disabled=true;
-      setTimeout(()=>{document.getElementById('successMsg').style.display='block';btn.style.display='none';e.target.reset();},1200);
+      const btn = e.target.querySelector('.form-submit');
+      btn.innerHTML = '<span>Sending…</span>'; btn.disabled = true;
+      try {
+        const response = await fetch(e.target.action, {
+          method: 'POST',
+          body: new FormData(e.target),
+          headers: { 'Accept': 'application/json' }
+        });
+        if (response.ok) {
+          document.getElementById('successMsg').style.display = 'block';
+          btn.style.display = 'none';
+          e.target.reset();
+        } else {
+          btn.innerHTML = '<span>Send Message →</span>'; btn.disabled = false;
+          alert('Something went wrong. Please try again or email us directly.');
+        }
+      } catch (err) {
+        btn.innerHTML = '<span>Send Message →</span>'; btn.disabled = false;
+        alert('Network error. Please check your connection and try again.');
+      }
     }
   </script>
 </body>
