@@ -380,8 +380,8 @@
     <div class="footer-copy">© 2025 NexaGrow Digital · Lucknow, India</div>
     <div class="footer-socials">
       <a href="#" class="social-link" title="LinkedIn">in</a>
-      <a href="#" class="social-link" title="Instagram">ig</a>
-      <a href="#" class="social-link" title="WhatsApp">wa</a>
+      <a href="https://www.instagram.com/dw_ashu.toast?igsh=MTZvNGh1c2lnMDh2" class="social-link" title="Instagram">ig</a>
+      <a href="https://whatsapp.com/dl/" class="social-link" title="WhatsApp">wa</a>
     </div>
   </footer>
 
